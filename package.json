@@ -1,0 +1,18 @@
+{
+  "name": "kafka-runner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "memwatch": "^0.2.2",
+    "minilog": "^2.0.8",
+    "node-static": "^0.7.6",
+    "radar": "^0.15.9",
+    "radar_client": "^0.14.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
