@@ -2,7 +2,17 @@ var Minilog = require('minilog'),
     Client = require('./client.js'),
     logging = new Minilog('main'),
     clients = [], 
-    resources = [];
+    resources = [],
+    NAMES = [
+      [ 'Julia', 1],
+      [ 'Robert', 2],
+      [ 'Luke', 3],
+      [ 'Anakin', 4], 
+      [ 'Leia', 5],
+      [ 'Silvia', 6] ,
+      [ 'Tam', 7]
+    ],
+    SIZE = NAMES.length;
 
 Minilog.suggest.defaultResult = false;
 Minilog
@@ -12,6 +22,14 @@ Minilog
   .allow(new RegExp('client:.*'), 'debug');
 
 Minilog.enable();
+
+var randomUser = function() {
+  var index = Math.floor(Math.random() * SIZE),
+      user = NAMES[index],
+      userData = { id: user[1], name: user[0] };
+
+  return userData;
+};
 
 var nextTime = function() {
   return Math.floor(Math.random() * 1000);
@@ -25,7 +43,7 @@ var runClient = function(client) {
   var states = {};
 
   var togglePresence = function() {
-    var index = Math.floor(Math.random() * 10),
+    var index = Math.floor(Math.random() * SIZE),
         resource = resources[index];
 
     if (resource) {
@@ -51,9 +69,14 @@ var runClient = function(client) {
   setTimeout(togglePresence, nextTime());
 };
 
-var createClient = function(res, userId) {
-  var client = new Client({ userId: userId}),
+var createClient = function(res) {
+  var userData = randomUser(),
+      client = new Client({ 
+        id: userData.id, name: userData.name
+      }),
       resources = clone(res);
+
+  console.log(userData);
   
   var subscribeClient = function() {
     var resource = resources.shift(); 
@@ -77,11 +100,11 @@ var createClient = function(res, userId) {
   client.connect(subscribeClient);
 };
 
-for(var j = 1; j <= 10; j++) {
+for(var j = 1; j <= SIZE; j++) {
   resources.push('ticket/' + j);
 }
 
-for(var j = 1; j <= 10; j++) {
+for(var j = 1; j <= SIZE; j++) {
   logging.info('Creating client ' + j);
-  createClient(resources, j);
+  createClient(resources);
 }

@@ -4,7 +4,12 @@
   "description": "Example: Run multiple radar clients against a radar server. Go online and offline randomly. ",
   "main": "index.js",
   "dependencies": {
+    "franz-kafka": "^0.7.5",
+    "kafka-node": "^0.2.27",
     "minilog": "^2.0.8",
+    "node-string-pad": "0.0.4",
+    "nomnom": "^1.8.1",
+    "pad": "^0.1.0",
     "radar_client": "^0.14.5"
   },
   "scripts": {

@@ -1,16 +1,25 @@
 var RadarClient = require('radar_client').constructor,
     Minilog = require('minilog');
 
-var Client = function(options) {
-  this.logging = new Minilog('client:' + options.userId);
+var Client = function(userData) {
+  this.logging = new Minilog('client:' + userData.id + ':' + userData.name);
 
-  this._radarClient = new RadarClient();
+  var rc = this._radarClient = new RadarClient();
+  rc.removeAllListeners('authenticateMessage');
+
+  this._radarClient.on('authenticateMessage', function authenticateMessage(message) {
+    message.userId = userData.id;
+    message.userData = userData;
+
+    rc.emit('messageAuthenticated', message);
+  });
+
   this._configuration = {
     host: 'localhost',
     port: 8000,
     path: '/engine.io-1.4.2', // ZRadar
     secure: false,
-    userId: options.userId,
+    userId: userData.id,
     userType: 2,
     accountName: 'runner'
   };
